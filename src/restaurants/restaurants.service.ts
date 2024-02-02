@@ -31,7 +31,7 @@ export class RestaurantsService {
             latitude
         } = restaurantsSearchFilterDTO
         return this.restaurantModel.find({
-            city,
+            city: city.toLowerCase(),
             location: {
                 $near: {
                     $geometry: {
@@ -59,7 +59,18 @@ export class RestaurantsService {
     }
 
     updateSingleRestaurant(id: string, updateRestaurantDTO: AddRestaurantDTO) {
-        return this.restaurantModel.findByIdAndUpdate(id, updateRestaurantDTO, { new: true });
+        return this.restaurantModel.findByIdAndUpdate(
+            id,
+            {
+                name: updateRestaurantDTO.name,
+                address: updateRestaurantDTO.address,
+                city: updateRestaurantDTO.city.toLowerCase(),
+                location: {
+                    type: 'Point',
+                    coordinates: [updateRestaurantDTO.longitude, updateRestaurantDTO.latitude]
+                }
+            },
+            { new: true });
     }
 
     deleteSingleRestaurant(id: string) {
