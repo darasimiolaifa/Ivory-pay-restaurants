@@ -93,14 +93,28 @@ describe('RestaurantsController E2E Test', () => {
             .expect(400);
         });
 
-        it("returns an error when you try to add a new restaurant with existing coordinates", () => {
+        it("returns an error when you try to add a restaurant with invalid longitude", () => {
             return request(app.getHttpServer())
             .post('/api/v1/restaurants')
             .send({
-                ...restaurant,
-                name: "New restaurant",
-                address: "new address",
-                city: "Another city"
+                name: "Cafe Delight",
+                address: "123 Main St, New York, NY",
+                city: "New York",
+                latitude: 40.7112,
+                longitude: "longitude"
+            })
+            .expect(400);
+        });
+
+        it("returns an error when you try to add a restaurant with invalid latitude", () => {
+            return request(app.getHttpServer())
+            .post('/api/v1/restaurants')
+            .send({
+                name: "Cafe Delight",
+                address: "123 Main St, New York, NY",
+                city: "New York",
+                latitude: "latitude",
+                longitude: -74.0082
             })
             .expect(400);
         });
@@ -263,6 +277,12 @@ describe('RestaurantsController E2E Test', () => {
         it("returns an error for invalid longitude", () => {
             return request(app.getHttpServer())
                 .get('/api/v1/restaurants?city=New York&longitude=-181.0055&latitude=40.7112&distance=0')
+                .expect(400);
+        });
+
+        it("returns an error for empty city", () => {
+            return request(app.getHttpServer())
+                .get('/api/v1/restaurants?longitude=-181.0055&latitude=40.7112&distance=0')
                 .expect(400);
         });
 
