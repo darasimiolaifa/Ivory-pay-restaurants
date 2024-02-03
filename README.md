@@ -6,7 +6,7 @@ An API for managing and searching for restaurants based on geo-location.
 
 Based on your location and a city input, you can search for restaurants within a specified distance.
 
-It is built with NestJs and MongoDb as the underlying strage.
+It is built with NestJs and MongoDb as the underlying storage.
 
 ### API Endpoints.
 
