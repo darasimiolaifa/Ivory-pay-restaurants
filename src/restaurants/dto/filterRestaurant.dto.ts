@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer";
-import {IsLatitude, IsLongitude, IsNotEmpty, IsNumber, IsPositive, IsString } from "class-validator";
+import {IsLatitude, IsLongitude, IsNotEmpty, IsNumber, IsPositive, IsString, Min } from "class-validator";
 
 export class FilterRestaurantDTO {
     @IsNotEmpty()
@@ -9,7 +9,7 @@ export class FilterRestaurantDTO {
     @IsNotEmpty()
     @IsNumber()
     @Transform(({value}) => Number(value))
-    @IsPositive()
+    @Min(0)
     distance: number;
 
     @IsNotEmpty()

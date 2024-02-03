@@ -62,7 +62,17 @@ describe('RestaurantsController E2E Test', () => {
         longitude: -73.9937
     }
 
+    const thirdRestaurant = {
+        name: "Pasta Paradise",
+        address: "456 Elm St, New York, NY",
+        city: "New York",
+        latitude: 40.7145,
+        longitude: -74.0082
+    }
+
     let addedRestaurantId: string;
+    let secondRestaurantId: string;
+    let thirdRestaurantId: string;
 
     describe("Add Restaurant", () => {
 
@@ -138,7 +148,6 @@ describe('RestaurantsController E2E Test', () => {
             .send(updateRestaurant)
             .expect(200)
             .expect(({body}) => {
-                console.log(body);
                 expect(body.id).toEqual(addedRestaurantId);
                 expect(body.longitude).toEqual(updateRestaurant.longitude);
                 expect(body.latitude).toEqual(updateRestaurant.latitude);
@@ -173,6 +182,106 @@ describe('RestaurantsController E2E Test', () => {
             .expect(({body}) => {
                 expect(body.message).toEqual(RESTAURANT_SINGULAR_NOT_FOUND)
             });
+        });
+    });
+
+    describe("Fetch Restaurants", () => {
+
+        it("returns the added restaurant instance", () => {
+            return request(app.getHttpServer())
+            .post('/api/v1/restaurants')
+            .send(restaurant)
+            .expect(201)
+            .expect(({body}) => {
+                addedRestaurantId = body.id;
+            });
+        });
+        it("returns the added restaurant instance", () => {
+            return request(app.getHttpServer())
+            .post('/api/v1/restaurants')
+            .send(updateRestaurant)
+            .expect(201)
+            .expect(({body}) => {
+                secondRestaurantId = body.id;
+            });
+        });
+        it("returns the added restaurant instance", () => {
+            return request(app.getHttpServer())
+            .post('/api/v1/restaurants')
+            .send(thirdRestaurant)
+            .expect(201)
+            .expect(({body}) => {
+                thirdRestaurantId = body.id;
+            });
+        });
+
+        it("returns restaurants based on the search criteria", () => {
+            return request(app.getHttpServer())
+                .get('/api/v1/restaurants?city=New York&longitude=-74.0055&latitude=40.7112&distance=1000')
+                .expect(({body}) => {
+                    expect(body.length).toEqual(2)
+                })
+                .expect(200);
+        });
+
+        it("returns restaurants based on the search criteria", () => {
+            return request(app.getHttpServer())
+                .get('/api/v1/restaurants?city=New York&longitude=-74.0055&latitude=40.7112&distance=10000')
+                .expect(({body}) => {
+                    expect(body.length).toEqual(3)
+                })
+                .expect(200);
+        });
+
+        it("returns an error for invalid city", () => {
+            return request(app.getHttpServer())
+                .get('/api/v1/restaurants?city=New ork&longitude=-74.0055&latitude=40.7112&distance=10000')
+                .expect(({body}) => {
+                    expect(body.message).toEqual(RESTAURANTS_PLURAL_NOT_FOUND)
+                })
+                .expect(404);
+        });
+
+        it("returns an error for valid but not supported city", () => {
+            return request(app.getHttpServer())
+                .get('/api/v1/restaurants?city=New Jersey&longitude=-74.0055&latitude=40.7112&distance=10000')
+                .expect(({body}) => {
+                    expect(body.message).toEqual(RESTAURANTS_PLURAL_NOT_FOUND)
+                })
+                .expect(404);
+        });
+
+        it("returns a restaurant for a distance value of 0", () => {
+            return request(app.getHttpServer())
+                .get('/api/v1/restaurants?city=New York&longitude=-74.0055&latitude=40.7112&distance=0')
+                .expect(({body}) => {
+                    expect(body.length).toEqual(1)
+                })
+                .expect(200);
+        });
+
+        it("returns an error for invalid longitude", () => {
+            return request(app.getHttpServer())
+                .get('/api/v1/restaurants?city=New York&longitude=-181.0055&latitude=40.7112&distance=0')
+                .expect(400);
+        });
+
+        it("returns an error for invalid latitude", () => {
+            return request(app.getHttpServer())
+                .get('/api/v1/restaurants?city=New York&longitude=-74.0055&latitude=91.7112&distance=0')
+                .expect(400);
+        });
+
+        it("returns an error for empty longitude", () => {
+            return request(app.getHttpServer())
+                .get('/api/v1/restaurants?city=New York&latitude=40.7112&distance=10000')
+                .expect(400);
+        });
+
+        it("returns an error for empty longitude", () => {
+            return request(app.getHttpServer())
+                .get('/api/v1/restaurants?city=New York&longitude=-74.0055&distance=10000')
+                .expect(400);
         });
     });
 });
