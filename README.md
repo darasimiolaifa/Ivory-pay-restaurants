@@ -10,13 +10,13 @@ It is built with NestJs and MongoDb as the underlying strage.
 
 ### API Endpoints.
 
-S/N | Verb   | Endpoint                 | Description                                     |
----:| -------|--------------------------|-------------------------------------------------|
-  1 | Get    | /api/v1/restaurants      | Get restaurants that match the query parameters |
-  2 | Post   | /api/v1/restaurants      | Add a restaurant                                |
-  3 | Get    | /api/v1/restaurants/id   | Get a single restaurant                         |
-  4 | Put    | /api/v1/restaurants/id   | Update the details of a restaurant              |
-  5 | Delete | /api/v1/restaurants/id   | Delete a restaurant                             |
+S/N | Verb   | Endpoint                  | Description                                     |
+---:| -------|---------------------------|-------------------------------------------------|
+  1 | Get    | /api/v1/restaurants       | Get restaurants that match the query parameters |
+  2 | Post   | /api/v1/restaurants       | Add a restaurant                                |
+  3 | Get    | /api/v1/restaurants/:id   | Get a single restaurant                         |
+  4 | Put    | /api/v1/restaurants/:id   | Update the details of a restaurant              |
+  5 | Delete | /api/v1/restaurants/:id   | Delete a restaurant                             |
 
 
 ### Hosted Documentation
