@@ -11,5 +11,3 @@ async function bootstrap() {
   await app.listen(3000);
 }
 bootstrap();
-
-// mongodb+srv://darash:hhL7NdNGJoLOh4cH@cluster0.5erkst5.mongodb.net/find_rest
