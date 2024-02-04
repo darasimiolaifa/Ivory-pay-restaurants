@@ -9,6 +9,8 @@ Based on your location and a city input, you can search for restaurants within a
 It is built with NestJs and MongoDb as the underlying storage.
 
 ### API Endpoints.
+##### Base URL 
+The project API base is hosted here on [Fly](https://ivorypay-restaurants.fly.dev)
 
 S/N | Verb   | Endpoint                  | Description                                     |
 ---:| -------|---------------------------|-------------------------------------------------|
@@ -17,7 +19,6 @@ S/N | Verb   | Endpoint                  | Description                          
   3 | Get    | /api/v1/restaurants/:id   | Get a single restaurant                         |
   4 | Put    | /api/v1/restaurants/:id   | Update the details of a restaurant              |
   5 | Delete | /api/v1/restaurants/:id   | Delete a restaurant                             |
-
 
 ### Hosted Documentation
 

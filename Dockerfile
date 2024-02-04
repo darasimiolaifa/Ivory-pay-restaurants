@@ -30,7 +30,7 @@ RUN yarn install --frozen-lockfile --production=false
 COPY --link . .
 
 # Build application
-RUN yarn run build
+# RUN yarn run build
 
 
 # Final stage for app image
@@ -41,4 +41,4 @@ COPY --from=build /app /app
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD [ "yarn", "run", "start" ]
+CMD [ "yarn", "run", "start:prod" ]
